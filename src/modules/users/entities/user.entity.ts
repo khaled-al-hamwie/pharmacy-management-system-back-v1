@@ -3,15 +3,18 @@ import {
     CreateDateColumn,
     DeleteDateColumn,
     Entity,
+    JoinColumn,
+    ManyToOne,
     PrimaryGeneratedColumn,
+    Relation,
 } from "typeorm";
+import { Role } from "../../roles/entities/role.entity";
 
 @Entity()
 export class User {
     @PrimaryGeneratedColumn("uuid")
     user_id: string;
 
-    @Column({ type: "uuid" })
     role_id: string;
 
     @Column({ type: "varchar", length: 45, unique: true })
@@ -37,4 +40,8 @@ export class User {
 
     @DeleteDateColumn()
     deleted_at: Date;
+
+    @ManyToOne(() => Role, (role) => role.users)
+    @JoinColumn({ name: "role_id" })
+    role: Relation<Role>;
 }

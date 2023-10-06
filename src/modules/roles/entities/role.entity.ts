@@ -1,4 +1,11 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import {
+    Column,
+    Entity,
+    OneToMany,
+    PrimaryGeneratedColumn,
+    Relation,
+} from "typeorm";
+import { User } from "../../users/entities/user.entity";
 
 @Entity()
 export class Role {
@@ -10,4 +17,7 @@ export class Role {
 
     @Column({ type: "varchar", length: 255, nullable: true })
     description: string;
+
+    @OneToMany(() => User, (user) => user.role)
+    users: Relation<User[]>;
 }
