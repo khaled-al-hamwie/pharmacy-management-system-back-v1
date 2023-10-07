@@ -36,7 +36,13 @@ describe("RolesController", () => {
     });
 
     it("RolesController.findAll: should throw error when no roles exist", async () => {
-        rolesDbMock.pop();
+        const role = rolesDbMock.pop();
         await expect(() => controller.findAll()).rejects.toThrowError();
+        rolesDbMock.push(role);
+    });
+
+    it("RolesController.findOne: should call the role service find by id", async () => {
+        await controller.findOne("1234");
+        expect(rolesServiceMock.findById).toBeCalledWith("1234");
     });
 });

@@ -30,8 +30,8 @@ export class RolesController {
     }
 
     @Get(":id")
-    findOne(@Param("id") id: string) {
-        return this.rolesService.findOne({});
+    findOne(@Param("id") role_id: string) {
+        return this.rolesService.findById(role_id);
     }
 
     @Patch(":id")
