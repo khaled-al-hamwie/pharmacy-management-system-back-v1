@@ -1,24 +1,11 @@
 import { EventEmitter2 } from "@nestjs/event-emitter";
 import { Test, TestingModule } from "@nestjs/testing";
 import { getRepositoryToken } from "@nestjs/typeorm";
+import { roleRepositoryMock } from "./constants/roles.mock";
 import { CreateRoleDto } from "./dto/create-role.dto";
 import { Role } from "./entities/role.entity";
 import { RolesService } from "./roles.service";
 
-const role_db: Role[] = [
-    {
-        role_id: "6d6d32d7-41f5-46ec-b772-41d8cf4a59ef",
-        name: "exist",
-        description: "some stuff",
-        users: [],
-    },
-];
-const mockRepository = {
-    create: jest.fn((x) => x),
-    findOne: jest.fn((options) =>
-        role_db.find((role) => role["name"] == options.where.name)
-    ),
-};
 const mockEmitter = {
     emit: jest.fn(),
 };
@@ -29,7 +16,10 @@ describe("RolesService", () => {
         const module: TestingModule = await Test.createTestingModule({
             providers: [
                 RolesService,
-                { provide: getRepositoryToken(Role), useValue: mockRepository },
+                {
+                    provide: getRepositoryToken(Role),
+                    useValue: roleRepositoryMock,
+                },
                 { provide: EventEmitter2, useValue: mockEmitter },
             ],
         }).compile();
@@ -74,7 +64,7 @@ describe("RolesService", () => {
         const createRoleDto: CreateRoleDto = { name: "not " };
         const role = await service.create(createRoleDto);
         expect(isUniqueSpy).toHaveBeenCalledWith(createRoleDto.name);
-        expect(mockRepository.create).toBeCalledWith(createRoleDto);
+        expect(roleRepositoryMock.create).toBeCalledWith(createRoleDto);
         expect(mockEmitter.emit).toBeCalled();
         expect(role).toBe(createRoleDto);
     });
