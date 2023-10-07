@@ -66,9 +66,12 @@ describe("RolesService", () => {
 
     it("RolesService.findById: should return id", async () => {
         const role_id = rolesDbMock[0].role_id;
-        console.log(role_id);
         const role = await service.findById(role_id);
-        console.log(role);
         expect(role).toBe(rolesDbMock[0]);
+    });
+
+    it("RolesService.findById: should throw error when role not exist", async () => {
+        const role_id = rolesDbMock[0].role_id + "jfls";
+        await expect(() => service.findById(role_id)).rejects.toThrow();
     });
 });
