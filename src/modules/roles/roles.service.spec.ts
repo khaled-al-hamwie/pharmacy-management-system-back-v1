@@ -63,4 +63,12 @@ describe("RolesService", () => {
         expect(mockEmitter.emit).toBeCalled();
         expect(role).toBe(createRoleDto);
     });
+
+    it("RolesService.findById: should return id", async () => {
+        const role_id = rolesDbMock[0].role_id;
+        console.log(role_id);
+        const role = await service.findById(role_id);
+        console.log(role);
+        expect(role).toBe(rolesDbMock[0]);
+    });
 });

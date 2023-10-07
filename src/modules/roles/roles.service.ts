@@ -7,6 +7,7 @@ import { CreateRoleDto } from "./dto/create-role.dto";
 import { UpdateRoleDto } from "./dto/update-role.dto";
 import { Role } from "./entities/role.entity";
 import { RoleForbiddenException } from "./exceptions/role.forbidden.exception";
+import { RoleNotFoundException } from "./exceptions/role.not-found.exception";
 
 @Injectable()
 export class RolesService {
@@ -27,6 +28,12 @@ export class RolesService {
 
     findOne(options: FindOneOptions<Role>): Promise<Role> {
         return this.repository.findOne(options);
+    }
+
+    async findById(role_id: string) {
+        const role = await this.findOne({ where: { role_id } });
+        if (!role) throw new RoleNotFoundException();
+        return role;
     }
 
     update(id: number, updateRoleDto: UpdateRoleDto) {
