@@ -17,9 +17,6 @@ export class User {
 
     role_id: string;
 
-    @Column({ type: "varchar", length: 45, unique: true })
-    user_name: string;
-
     @Column({ type: "varchar", length: 16 })
     first_name: string;
 
@@ -29,7 +26,7 @@ export class User {
     @Column({ type: "varchar", length: 2000 })
     pic: string;
 
-    @Column({ type: "varchar", length: 500 })
+    @Column({ type: "varchar", length: 500, unique: true })
     email: string;
 
     @Column({ type: "varchar", length: 255 })

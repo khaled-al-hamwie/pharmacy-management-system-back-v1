@@ -9,14 +9,9 @@ import {
 } from "class-validator";
 
 export class CreateUserDto {
-    // @IsUUID()
-    // @Transform(({ value }) => value.toString())
-    // role_id: string;
-
-    @IsString()
-    @IsNotEmpty()
-    @Length(8, 45)
-    user_name: string;
+    @IsUUID()
+    @Transform(({ value }) => value.toString())
+    role_id: string;
 
     @IsString()
     @IsNotEmpty()
