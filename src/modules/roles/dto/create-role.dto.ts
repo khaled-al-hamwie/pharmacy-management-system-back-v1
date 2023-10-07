@@ -10,5 +10,5 @@ export class CreateRoleDto {
     @IsOptional()
     @IsString()
     @Length(3, 45)
-    description: string;
+    description?: string;
 }
