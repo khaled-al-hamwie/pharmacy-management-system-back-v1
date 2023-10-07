@@ -36,8 +36,11 @@ export class RolesService {
         return role;
     }
 
-    update(id: number, updateRoleDto: UpdateRoleDto) {
-        return `This action updates a #${id} role`;
+    async update(role: Role, updateRoleDto: UpdateRoleDto): Promise<Role> {
+        if (updateRoleDto.name) await this.isUnique(updateRoleDto.name);
+        Object.assign(role, updateRoleDto);
+        this.eventEmitter.emit(RoleSaveEvent, role);
+        return role;
     }
 
     remove(id: number) {

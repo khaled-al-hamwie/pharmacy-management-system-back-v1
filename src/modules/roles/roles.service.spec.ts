@@ -74,4 +74,13 @@ describe("RolesService", () => {
         const role_id = rolesDbMock[0].role_id + "jfls";
         await expect(() => service.findById(role_id)).rejects.toThrow();
     });
+
+    it("RolesService.update: should update", async () => {
+        const isUniqueSpy = jest.spyOn(service, "isUnique");
+        const createRoleDto: CreateRoleDto = { name: "not " };
+        const role = await service.update(rolesDbMock[0], createRoleDto);
+        expect(isUniqueSpy).toHaveBeenCalledWith(createRoleDto.name);
+        expect(mockEmitter.emit).toBeCalled();
+        expect(role.name).toBe(createRoleDto.name);
+    });
 });
