@@ -1,14 +1,12 @@
 import { EventEmitter2 } from "@nestjs/event-emitter";
 import { Test, TestingModule } from "@nestjs/testing";
 import { getRepositoryToken } from "@nestjs/typeorm";
+import { EmitterMock } from "../../core/constants/mock";
 import { roleRepositoryMock, rolesDbMock } from "./constants/roles.mock";
 import { CreateRoleDto } from "./dto/create-role.dto";
 import { Role } from "./entities/role.entity";
 import { RolesService } from "./roles.service";
 
-const mockEmitter = {
-    emit: jest.fn(),
-};
 describe("RolesService", () => {
     let service: RolesService;
 
@@ -20,7 +18,7 @@ describe("RolesService", () => {
                     provide: getRepositoryToken(Role),
                     useValue: roleRepositoryMock,
                 },
-                { provide: EventEmitter2, useValue: mockEmitter },
+                { provide: EventEmitter2, useValue: EmitterMock },
             ],
         }).compile();
 
@@ -60,7 +58,7 @@ describe("RolesService", () => {
         const role = await service.create(createRoleDto);
         expect(isUniqueSpy).toHaveBeenCalledWith(createRoleDto.name);
         expect(roleRepositoryMock.create).toBeCalledWith(createRoleDto);
-        expect(mockEmitter.emit).toBeCalled();
+        expect(EmitterMock.emit).toBeCalled();
         expect(role).toBe(createRoleDto);
     });
 
@@ -80,7 +78,7 @@ describe("RolesService", () => {
         const createRoleDto: CreateRoleDto = { name: "not " };
         const role = await service.update(rolesDbMock[0], createRoleDto);
         expect(isUniqueSpy).toHaveBeenCalledWith(createRoleDto.name);
-        expect(mockEmitter.emit).toBeCalled();
+        expect(EmitterMock.emit).toBeCalled();
         expect(role.name).toBe(createRoleDto.name);
     });
 
