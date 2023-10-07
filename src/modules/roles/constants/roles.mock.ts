@@ -1,3 +1,4 @@
+import { FindManyOptions } from "typeorm";
 import { CreateRoleDto } from "../dto/create-role.dto";
 import { Role } from "../entities/role.entity";
 
@@ -17,8 +18,13 @@ export const rolesDbMock: Role[] = [
 export const roleRepositoryMock = {
     save: jest.fn(),
     create: jest.fn((x) => x),
-    findOne: jest.fn((options) =>
-        rolesDbMock.find((role) => role["name"] == options.where.name)
+    findOne: jest.fn((options: FindManyOptions<Role>) =>
+        rolesDbMock.find((role) => {
+            const w = options.where;
+            for (const key in w) {
+                return role[key] == w[key];
+            }
+        })
     ),
 };
 
