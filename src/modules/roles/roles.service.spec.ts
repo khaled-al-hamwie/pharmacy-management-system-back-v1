@@ -1,18 +1,70 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { RolesService } from './roles.service';
+import { EventEmitter2 } from "@nestjs/event-emitter";
+import { Test, TestingModule } from "@nestjs/testing";
+import { getRepositoryToken } from "@nestjs/typeorm";
+import { Role } from "./entities/role.entity";
+import { RolesService } from "./roles.service";
 
-describe('RolesService', () => {
-  let service: RolesService;
+const role_db: Role[] = [
+    {
+        role_id: "6d6d32d7-41f5-46ec-b772-41d8cf4a59ef",
+        name: "exist",
+        description: "some stuff",
+        users: [],
+    },
+];
+const mockRepository = {
+    create: jest.fn((role: Role) => role_db.push(role)),
+    findOne: jest.fn((options) =>
+        role_db.find((role) => role["name"] == options.where.name)
+    ),
+};
+const mockEmitter = {
+    emit: jest.fn(),
+};
+describe("RolesService", () => {
+    let service: RolesService;
 
-  beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      providers: [RolesService],
-    }).compile();
+    beforeAll(async () => {
+        const module: TestingModule = await Test.createTestingModule({
+            providers: [
+                RolesService,
+                { provide: getRepositoryToken(Role), useValue: mockRepository },
+                { provide: EventEmitter2, useValue: mockEmitter },
+            ],
+        }).compile();
 
-    service = module.get<RolesService>(RolesService);
-  });
+        service = module.get<RolesService>(RolesService);
+    });
 
-  it('should be defined', () => {
-    expect(service).toBeDefined();
-  });
+    it("should be defined", () => {
+        expect(service).toBeDefined();
+    });
+
+    it("role.findOne: should not return the mock data", async () => {
+        const result = await service.findOne({
+            where: { name: "khaled" },
+        });
+        expect(result).toBeUndefined();
+    });
+
+    it("role.findOne: should return the mock data", async () => {
+        const result = await service.findOne({
+            where: { name: "exist" },
+        });
+        expect(result).toEqual({
+            role_id: "6d6d32d7-41f5-46ec-b772-41d8cf4a59ef",
+            name: "exist",
+            description: "some stuff",
+            users: [],
+        });
+    });
+
+    it("role.isUnique: should not throw when unique", async () => {
+        const role = await service.isUnique("name");
+        expect(role).toBeTruthy();
+    });
+
+    it("role.isUnique: should throw when not unique", async () => {
+        await expect(() => service.isUnique("exist")).rejects.toThrow();
+    });
 });
