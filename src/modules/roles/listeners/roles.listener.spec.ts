@@ -7,7 +7,7 @@ import { RolesListener } from "./roles.listener";
 describe("RolesListener", () => {
     let provider: RolesListener;
 
-    beforeEach(async () => {
+    beforeAll(async () => {
         const module: TestingModule = await Test.createTestingModule({
             providers: [
                 RolesListener,
@@ -21,11 +21,11 @@ describe("RolesListener", () => {
         provider = module.get<RolesListener>(RolesListener);
     });
 
-    it("should be defined", () => {
+    it("RolesListener: should be defined", () => {
         expect(provider).toBeDefined();
     });
 
-    it("should call the save method of the repository with the correct payload", async () => {
+    it("RolesListener: should call the save method of the repository with the correct payload", async () => {
         const payload = new Role();
         await provider.save(payload);
         expect(roleRepositoryMock.save).toHaveBeenCalledWith(payload);
