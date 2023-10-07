@@ -9,6 +9,8 @@ import {
 } from "@nestjs/common";
 import { CreateRoleDto } from "./dto/create-role.dto";
 import { UpdateRoleDto } from "./dto/update-role.dto";
+import { Role } from "./entities/role.entity";
+import { RoleNotFoundException } from "./exceptions/role.not-found.exception";
 import { RolesService } from "./roles.service";
 
 @Controller("roles")
@@ -21,8 +23,10 @@ export class RolesController {
     }
 
     @Get()
-    findAll() {
-        return this.rolesService.findAll();
+    async findAll() {
+        const roles: Role[] = await this.rolesService.findAll({});
+        if (roles.length == 0) throw new RoleNotFoundException();
+        return roles;
     }
 
     @Get(":id")

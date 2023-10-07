@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { EventEmitter2 } from "@nestjs/event-emitter";
 import { InjectRepository } from "@nestjs/typeorm";
-import { FindOneOptions, Repository } from "typeorm";
+import { FindManyOptions, FindOneOptions, Repository } from "typeorm";
 import { RoleSaveEvent } from "./constants/role.event";
 import { CreateRoleDto } from "./dto/create-role.dto";
 import { UpdateRoleDto } from "./dto/update-role.dto";
@@ -14,18 +14,18 @@ export class RolesService {
         @InjectRepository(Role) private readonly repository: Repository<Role>,
         private readonly eventEmitter: EventEmitter2
     ) {}
-    async create(createRoleDto: CreateRoleDto) {
+    async create(createRoleDto: CreateRoleDto): Promise<Role> {
         await this.isUnique(createRoleDto.name);
         const role = this.repository.create(createRoleDto);
         this.eventEmitter.emit(RoleSaveEvent, role);
         return role;
     }
 
-    findAll() {
-        return `This action returns all roles`;
+    findAll(options: FindManyOptions<Role>): Promise<Role[]> {
+        return this.repository.find(options);
     }
 
-    findOne(options: FindOneOptions<Role>) {
+    findOne(options: FindOneOptions<Role>): Promise<Role> {
         return this.repository.findOne(options);
     }
 

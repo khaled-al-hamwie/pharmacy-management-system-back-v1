@@ -1,5 +1,9 @@
 import { Test, TestingModule } from "@nestjs/testing";
-import { createRoleDto, rolesServiceMock } from "./constants/roles.mock";
+import {
+    createRoleDto,
+    rolesDbMock,
+    rolesServiceMock,
+} from "./constants/roles.mock";
 import { RolesController } from "./roles.controller";
 import { RolesService } from "./roles.service";
 
@@ -23,5 +27,16 @@ describe("RolesController", () => {
         await controller.create(createRoleDto);
         expect(rolesServiceMock.create).toBeCalledWith(createRoleDto);
         expect(rolesServiceMock.create).toBeCalledTimes(1);
+    });
+
+    it("RolesController.findAll: should return roles", async () => {
+        const roles = await controller.findAll();
+        expect(rolesServiceMock.findAll).toBeCalledTimes(1);
+        expect(roles).not.toBeNull();
+    });
+
+    it("RolesController.findAll: should throw error when no roles exist", async () => {
+        rolesDbMock.pop();
+        await expect(() => controller.findAll()).rejects.toThrowError();
     });
 });
