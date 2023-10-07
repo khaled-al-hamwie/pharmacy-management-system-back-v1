@@ -32,6 +32,7 @@ export const rolesServiceMock = {
     create: jest.fn(),
     findAll: jest.fn(() => rolesDbMock),
     findOne: jest.fn(),
+    findById: jest.fn(),
     update: jest.fn(),
     remove: jest.fn(),
 };
