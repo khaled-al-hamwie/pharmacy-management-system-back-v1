@@ -1,6 +1,7 @@
 import { EventEmitter2 } from "@nestjs/event-emitter";
 import { Test, TestingModule } from "@nestjs/testing";
 import { getRepositoryToken } from "@nestjs/typeorm";
+import { CreateRoleDto } from "./dto/create-role.dto";
 import { Role } from "./entities/role.entity";
 import { RolesService } from "./roles.service";
 
@@ -13,7 +14,7 @@ const role_db: Role[] = [
     },
 ];
 const mockRepository = {
-    create: jest.fn((role: Role) => role_db.push(role)),
+    create: jest.fn((x) => x),
     findOne: jest.fn((options) =>
         role_db.find((role) => role["name"] == options.where.name)
     ),
@@ -66,5 +67,15 @@ describe("RolesService", () => {
 
     it("role.isUnique: should throw when not unique", async () => {
         await expect(() => service.isUnique("exist")).rejects.toThrow();
+    });
+
+    it("role.create: should create", async () => {
+        const isUniqueSpy = jest.spyOn(service, "isUnique");
+        const createRoleDto: CreateRoleDto = { name: "not " };
+        const role = await service.create(createRoleDto);
+        expect(isUniqueSpy).toHaveBeenCalledWith(createRoleDto.name);
+        expect(mockRepository.create).toBeCalledWith(createRoleDto);
+        expect(mockEmitter.emit).toBeCalled();
+        expect(role).toBe(createRoleDto);
     });
 });
