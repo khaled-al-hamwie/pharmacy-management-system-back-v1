@@ -1,7 +1,7 @@
 import { EventEmitter2 } from "@nestjs/event-emitter";
 import { Test, TestingModule } from "@nestjs/testing";
 import { getRepositoryToken } from "@nestjs/typeorm";
-import { EmitterMock } from "../../core/constants/mock";
+import { EmitterMock } from "../../core/constants/core.mock";
 import { roleRepositoryMock, rolesDbMock } from "./constants/roles.mock";
 import { CreateRoleDto } from "./dto/create-role.dto";
 import { Role } from "./entities/role.entity";
