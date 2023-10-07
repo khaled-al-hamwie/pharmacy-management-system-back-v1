@@ -45,4 +45,16 @@ describe("RolesController", () => {
         await controller.findOne("1234");
         expect(rolesServiceMock.findById).toBeCalledWith("1234");
     });
+
+    it("RolesController.update: should call the role service update", async () => {
+        await controller.update("1234", { name: "k" });
+        expect(rolesServiceMock.findById).toBeCalledWith("1234");
+        expect(rolesServiceMock.update).toBeCalled();
+    });
+
+    it("RolesController.remove: should call the role remove update", async () => {
+        await controller.remove("1234");
+        expect(rolesServiceMock.findById).toBeCalledWith("1234");
+        expect(rolesServiceMock.remove).toBeCalled();
+    });
 });

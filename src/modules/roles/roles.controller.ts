@@ -35,12 +35,17 @@ export class RolesController {
     }
 
     @Patch(":id")
-    update(@Param("id") id: string, @Body() updateRoleDto: UpdateRoleDto) {
-        return this.rolesService.update(+id, updateRoleDto);
+    async update(
+        @Param("id") id: string,
+        @Body() updateRoleDto: UpdateRoleDto
+    ) {
+        const role = await this.rolesService.findById(id);
+        return this.rolesService.update(role, updateRoleDto);
     }
 
     @Delete(":id")
-    remove(@Param("id") id: string) {
-        return this.rolesService.remove(+id);
+    async remove(@Param("id") id: string) {
+        const role = await this.rolesService.findById(id);
+        return this.rolesService.remove(role);
     }
 }
