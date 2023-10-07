@@ -1,5 +1,6 @@
 import {
     Column,
+    DeleteDateColumn,
     Entity,
     OneToMany,
     PrimaryGeneratedColumn,
@@ -17,6 +18,9 @@ export class Role {
 
     @Column({ type: "varchar", length: 255, nullable: true })
     description: string;
+
+    @DeleteDateColumn()
+    deleted_at: Date;
 
     @OneToMany(() => User, (user) => user.role)
     users: Relation<User[]>;

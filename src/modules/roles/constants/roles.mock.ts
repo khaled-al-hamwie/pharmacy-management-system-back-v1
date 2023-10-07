@@ -11,6 +11,7 @@ export const rolesDbMock: Role[] = [
         role_id: "6d6d32d7-41f5-46ec-b772-41d8cf4a59ef",
         name: "exist",
         description: "some stuff",
+        deleted_at: null,
         users: [],
     },
 ];
@@ -26,6 +27,7 @@ export const roleRepositoryMock = {
             }
         })
     ),
+    softRemove: jest.fn(),
 };
 
 export const rolesServiceMock = {
