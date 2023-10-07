@@ -83,4 +83,11 @@ describe("RolesService", () => {
         expect(mockEmitter.emit).toBeCalled();
         expect(role.name).toBe(createRoleDto.name);
     });
+
+    it("RolesService.remove: should remove", async () => {
+        const role = new Role();
+        const res = await service.remove(role);
+        expect(roleRepositoryMock.softRemove).toBeCalledWith(role);
+        expect(res.message).toBe("role has beend deleted succsesfully");
+    });
 });

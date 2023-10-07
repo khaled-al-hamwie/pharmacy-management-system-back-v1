@@ -43,8 +43,9 @@ export class RolesService {
         return role;
     }
 
-    remove(id: number) {
-        return `This action removes a #${id} role`;
+    remove(role: Role) {
+        this.repository.softRemove(role);
+        return { message: "role has beend deleted succsesfully" };
     }
 
     async isUnique(name: string) {
