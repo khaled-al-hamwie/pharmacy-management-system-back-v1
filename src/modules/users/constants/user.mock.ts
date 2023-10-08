@@ -14,3 +14,7 @@ export const createUserDto: CreateUserDto = {
     email: "bla@gmail",
     password: "blabla",
 };
+
+export const usersServiceMock = {
+    create: jest.fn((x) => x),
+};
