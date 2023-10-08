@@ -19,13 +19,14 @@ export class UsersService {
         private readonly eventEmitter: EventEmitter2
     ) {}
     async create(createUserDto: CreateUserDto) {
-        await this.rolesService.findById(createUserDto.role_id);
+        const role = await this.rolesService.findById(createUserDto.role_id);
         await this.isUnique(createUserDto.email);
         const password = await this.cryptographService.b_hash(
             createUserDto.password
         );
-        createUserDto.password = password;
         const user = this.repository.create(createUserDto);
+        user.role = role;
+        user.password = password;
         this.eventEmitter.emit(UserSaveEvent, user);
         return user;
     }
