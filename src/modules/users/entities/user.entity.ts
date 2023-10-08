@@ -23,14 +23,14 @@ export class User {
     @Column({ type: "varchar", length: 16 })
     last_name: string;
 
-    @Column({ type: "varchar", length: 2000 })
-    pic: string;
-
     @Column({ type: "varchar", length: 500, unique: true })
     email: string;
 
     @Column({ type: "varchar", length: 255 })
     password: string;
+
+    @Column({ type: "varchar", length: 2000, nullable: true })
+    pic?: string;
 
     @CreateDateColumn()
     created_at: Date;
