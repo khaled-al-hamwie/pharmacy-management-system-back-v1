@@ -31,6 +31,6 @@ describe("JJwtService", () => {
         expect(res.access_token).not.toBeNull();
         expect(res.access_token).not.toBeUndefined();
         const decoded = await jwtService.decode(res.access_token);
-        expect(decoded.user_id).toEqual("thie-si-sub");
+        expect(decoded.sub).toEqual("thie-si-sub");
     });
 });
