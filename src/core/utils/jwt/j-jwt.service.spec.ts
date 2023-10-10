@@ -24,7 +24,7 @@ describe("JJwtService", () => {
 
     it("JJwtService.signToken", async () => {
         const payload: PayloadInterface = {
-            user_id: "thie-si-sub",
+            sub: "thie-si-sub",
             role: new Role(),
         };
         const res = await service.signToken(payload);
