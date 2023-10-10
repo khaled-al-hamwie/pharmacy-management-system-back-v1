@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
-import { JwtService } from "@nestjs/jwt";
+import { JwtService, JwtSignOptions } from "@nestjs/jwt";
 
 @Injectable()
 export class JJwtService {
@@ -10,7 +10,7 @@ export class JJwtService {
     ) {}
 
     signToken(payload: any) {
-        const option = {
+        const option: JwtSignOptions = {
             secret: this.configService.get("JWTKEY"),
             expiresIn: this.configService.get("TOKEN_EXPIRATION"),
         };
