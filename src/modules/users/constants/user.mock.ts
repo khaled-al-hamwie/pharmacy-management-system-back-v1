@@ -1,3 +1,4 @@
+import { Role } from "../../../modules/roles/entities/role.entity";
 import { CreateUserDto } from "../dto/create-user.dto";
 
 export const userRepositoryMock = {
@@ -17,4 +18,9 @@ export const createUserDto: CreateUserDto = {
 
 export const usersServiceMock = {
     create: jest.fn((x) => x),
+    findOne: jest.fn((x) => {
+        if (x.where.email == "found@gmail.com")
+            return { password: "bla", user_id: "123", role: new Role() };
+        else return null;
+    }),
 };

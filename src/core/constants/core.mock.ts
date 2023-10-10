@@ -5,7 +5,7 @@ export const EmitterMock = {
 };
 
 export const CryptographServiceMock: CryptographService = {
-    compare: jest.fn(),
+    compare: jest.fn((x, y) => Promise.resolve(x == y)),
     b_hash: jest.fn(),
 };
 
