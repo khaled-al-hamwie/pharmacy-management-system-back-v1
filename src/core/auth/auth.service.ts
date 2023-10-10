@@ -34,6 +34,7 @@ export class AuthService {
     async checkEmail(email: string) {
         const user = await this.usersService.findOne({
             where: { email: email },
+            relations: { role: true },
         });
         if (!user) throw new CredentailsDontMatchException();
         return user;
