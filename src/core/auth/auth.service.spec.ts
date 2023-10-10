@@ -51,4 +51,24 @@ describe("AuthService", () => {
             service.checkEmail("no@gmail.com")
         ).rejects.toThrowError(CredentailsDontMatchException);
     });
+
+    it("AuthService.checkPassword: should return true when password match", async () => {
+        const user = await service.checkPassword("bla", "bla");
+        expect(user).toBeTruthy();
+    });
+
+    it("AuthService.checkPassword: should throw error when password dont match", async () => {
+        await expect(() =>
+            service.checkPassword("bla", "no")
+        ).rejects.toThrowError(CredentailsDontMatchException);
+    });
+
+    it("AuthService.login: should login ", async () => {
+        const checkEmailSpy = jest.spyOn(service, "checkEmail");
+        const checkPassowdSpy = jest.spyOn(service, "checkPassword");
+        await service.login({ email: "found@gmail.com", password: "bla" });
+        expect(checkEmailSpy).toBeCalledWith("found@gmail.com");
+        expect(checkPassowdSpy).toBeCalledWith("bla", "bla");
+        expect(JJwtServiceMock.signToken).toBeCalled();
+    });
 });
