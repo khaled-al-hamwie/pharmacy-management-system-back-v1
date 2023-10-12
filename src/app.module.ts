@@ -3,6 +3,7 @@ import { ConfigModule } from "@nestjs/config";
 import { EventEmitterModule } from "@nestjs/event-emitter";
 import { AuthModule } from "./core/auth/auth.module";
 import { DatabaseModule } from "./core/databases/database.module";
+import { AbilitiesModule } from "./modules/abilities/abilities.module";
 import { RolesModule } from "./modules/roles/roles.module";
 import { UsersModule } from "./modules/users/users.module";
 
@@ -12,6 +13,7 @@ import { UsersModule } from "./modules/users/users.module";
         EventEmitterModule.forRoot({ global: true }),
         DatabaseModule,
         RolesModule,
+        AbilitiesModule,
         UsersModule,
         AuthModule,
     ],

@@ -6,6 +6,7 @@ import {
     PrimaryGeneratedColumn,
     Relation,
 } from "typeorm";
+import { Ability } from "../../abilities/entities/ability.entity";
 import { User } from "../../users/entities/user.entity";
 
 @Entity()
@@ -24,4 +25,7 @@ export class Role {
 
     @OneToMany(() => User, (user) => user.role)
     users: Relation<User[]>;
+
+    @OneToMany(() => Ability, (ability) => ability.role)
+    abilities: Relation<Ability[]>;
 }

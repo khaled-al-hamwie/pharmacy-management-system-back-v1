@@ -13,6 +13,7 @@ export const rolesDbMock: Role[] = [
         description: "some stuff",
         deleted_at: null,
         users: [],
+        abilities: [],
     },
 ];
 
