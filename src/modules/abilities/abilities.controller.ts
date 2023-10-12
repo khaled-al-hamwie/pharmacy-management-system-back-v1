@@ -27,7 +27,7 @@ export class AbilitiesController {
 
     @Get(":id")
     findOne(@Param("id") id: string) {
-        return this.abilitiesService.findOne(+id);
+        return this.abilitiesService.findOne({});
     }
 
     @Patch(":id")
