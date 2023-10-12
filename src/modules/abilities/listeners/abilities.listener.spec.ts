@@ -1,33 +1,37 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { getRepositoryToken } from "@nestjs/typeorm";
-import { roleRepositoryMock } from "../constants/roles.mock";
-import { Role } from "../entities/role.entity";
-import { RolesListener } from "./abilities.listener";
+import { Ability } from "../entities/ability.entity";
+import { AbilitysListener } from "./abilities.listener";
 
-describe("RolesListener", () => {
-    let provider: RolesListener;
+// Mock repository object
+const abilityRepositoryMock = {
+    save: jest.fn(),
+};
+
+describe("AbilitysListener", () => {
+    let provider: AbilitysListener;
 
     beforeAll(async () => {
         const module: TestingModule = await Test.createTestingModule({
             providers: [
-                RolesListener,
+                AbilitysListener,
                 {
-                    provide: getRepositoryToken(Role),
-                    useValue: roleRepositoryMock,
+                    provide: getRepositoryToken(Ability),
+                    useValue: abilityRepositoryMock,
                 },
             ],
         }).compile();
 
-        provider = module.get<RolesListener>(RolesListener);
+        provider = module.get<AbilitysListener>(AbilitysListener);
     });
 
-    it("RolesListener: should be defined", () => {
+    it("AbilitysListener: should be defined", () => {
         expect(provider).toBeDefined();
     });
 
-    it("RolesListener: should call the save method of the repository with the correct payload", async () => {
-        const payload = new Role();
+    it("AbilitysListener: should call the save method of the repository with the correct payload", async () => {
+        const payload = new Ability();
         await provider.save(payload);
-        expect(roleRepositoryMock.save).toHaveBeenCalledWith(payload);
+        expect(abilityRepositoryMock.save).toHaveBeenCalledWith(payload);
     });
 });
