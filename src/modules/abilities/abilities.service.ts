@@ -1,8 +1,9 @@
 import { Injectable } from "@nestjs/common";
 import { EventEmitter2 } from "@nestjs/event-emitter";
 import { InjectRepository } from "@nestjs/typeorm";
-import { FindOneOptions, Repository } from "typeorm";
+import { FindManyOptions, FindOneOptions, Repository } from "typeorm";
 import { EntityForbiddenException } from "../../core/common/exceptions/entity.forbidden.exception";
+import { EntityNotFoundException } from "../../core/common/exceptions/entity.not-found.exception";
 import { AbilitySaveEvent } from "./constants/ability.event";
 import { CreateAbilityDto } from "./dto/create-ability.dto";
 import { UpdateAbilityDto } from "./dto/update-ability.dto";
@@ -22,20 +23,30 @@ export class AbilitiesService {
         return ability;
     }
 
-    findAll() {
-        return `This action returns all abilities`;
+    findAll(options: FindManyOptions<Ability>): Promise<Ability[]> {
+        return this.repository.find(options);
     }
 
     findOne(options: FindOneOptions<Ability>): Promise<Ability> {
         return this.repository.findOne(options);
     }
 
-    update(id: number, updateAbilityDto: UpdateAbilityDto) {
-        return `This action updates a #${id} ability`;
+    async findById(id: string) {
+        const ability = await this.findOne({ where: { ability_id: id } });
+        if (!ability) throw new EntityNotFoundException("Ability");
+        return ability;
     }
 
-    remove(id: number) {
-        return `This action removes a #${id} ability`;
+    async update(ability: Ability, updateDto: UpdateAbilityDto) {
+        if (updateDto.name) await this.isUnique(updateDto.name);
+        Object.assign(ability, updateDto);
+        this.eventEmitter.emit(AbilitySaveEvent, ability);
+        return ability;
+    }
+
+    remove(ability: Ability) {
+        this.repository.softRemove(ability);
+        return { message: "ability has beend deleted succsesfully" };
     }
 
     async isUnique(name: string) {
