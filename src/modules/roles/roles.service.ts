@@ -2,11 +2,11 @@ import { Injectable } from "@nestjs/common";
 import { EventEmitter2 } from "@nestjs/event-emitter";
 import { InjectRepository } from "@nestjs/typeorm";
 import { FindManyOptions, FindOneOptions, Repository } from "typeorm";
+import { EntityForbiddenException } from "../../core/common/exceptions/entity.forbidden.exception";
 import { RoleSaveEvent } from "./constants/role.event";
 import { CreateRoleDto } from "./dto/create-role.dto";
 import { UpdateRoleDto } from "./dto/update-role.dto";
 import { Role } from "./entities/role.entity";
-import { RoleForbiddenException } from "./exceptions/role.forbidden.exception";
 import { RoleNotFoundException } from "./exceptions/role.not-found.exception";
 
 @Injectable()
@@ -49,8 +49,8 @@ export class RolesService {
     }
 
     async isUnique(name: string) {
-        const role = await this.findOne({ where: { name } });
-        if (role) throw new RoleForbiddenException(name);
+        const role = await this.findOne({ where: { name }, withDeleted: true });
+        if (role) throw new EntityForbiddenException("Role", name);
         return true;
     }
 }
