@@ -1,12 +1,8 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { getRepositoryToken } from "@nestjs/typeorm";
+import { abilityRepositoryMock } from "../constants/abilities.mock";
 import { Ability } from "../entities/ability.entity";
 import { AbilitysListener } from "./abilities.listener";
-
-// Mock repository object
-const abilityRepositoryMock = {
-    save: jest.fn(),
-};
 
 describe("AbilitysListener", () => {
     let provider: AbilitysListener;
