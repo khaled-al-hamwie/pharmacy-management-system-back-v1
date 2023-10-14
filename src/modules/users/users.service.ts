@@ -2,6 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { EventEmitter2 } from "@nestjs/event-emitter";
 import { InjectRepository } from "@nestjs/typeorm";
 import { FindOneOptions, Repository } from "typeorm";
+import { EntityNotFoundException } from "../../core/common/exceptions/entity.not-found.exception";
 import { CryptographService } from "../../core/utils/cryptograph/cryptograph.service";
 import { RolesService } from "../roles/roles.service";
 import { UserSaveEvent } from "./constants/user.event";
@@ -37,6 +38,12 @@ export class UsersService {
 
     findOne(options: FindOneOptions<User>) {
         return this.repository.findOne(options);
+    }
+
+    async findById(id: string) {
+        const user = await this.findOne({ where: { user_id: id } });
+        if (!user) throw new EntityNotFoundException("User");
+        return user;
     }
 
     update(id: number, updateUserDto: UpdateUserDto) {

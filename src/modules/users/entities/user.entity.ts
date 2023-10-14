@@ -5,10 +5,12 @@ import {
     Entity,
     JoinColumn,
     ManyToOne,
+    OneToMany,
     PrimaryGeneratedColumn,
     Relation,
 } from "typeorm";
 import { Role } from "../../roles/entities/role.entity";
+import { UserAbility } from "../../user-abilities/entities/user-ability.entity";
 
 @Entity()
 export class User {
@@ -41,4 +43,7 @@ export class User {
     @ManyToOne(() => Role, (role) => role.users)
     @JoinColumn({ name: "role_id" })
     role: Relation<Role>;
+
+    @OneToMany(() => UserAbility, (user_ability) => user_ability.user)
+    user_abilities: Relation<UserAbility[]>;
 }

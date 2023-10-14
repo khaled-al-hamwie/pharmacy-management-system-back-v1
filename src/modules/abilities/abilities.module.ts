@@ -9,5 +9,6 @@ import { AbilitysListener } from "./listeners/abilities.listener";
     imports: [TypeOrmModule.forFeature([Ability])],
     controllers: [AbilitiesController],
     providers: [AbilitiesService, AbilitysListener],
+    exports: [AbilitiesService],
 })
 export class AbilitiesModule {}
