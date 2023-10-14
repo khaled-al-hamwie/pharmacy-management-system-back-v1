@@ -32,7 +32,9 @@ export class AbilitiesService {
     }
 
     async findById(id: string) {
-        const ability = await this.findOne({ where: { ability_id: id } });
+        const ability = await this.findOne({
+            where: { ability_id: id },
+        });
         if (!ability) throw new EntityNotFoundException("Ability");
         return ability;
     }
@@ -50,7 +52,10 @@ export class AbilitiesService {
     }
 
     async isUnique(name: string) {
-        const ability = await this.findOne({ where: { name } });
+        const ability = await this.findOne({
+            where: { name },
+            withDeleted: true,
+        });
         if (ability) throw new EntityForbiddenException("Ability", name);
         return true;
     }
