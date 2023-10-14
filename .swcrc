@@ -1,7 +1,10 @@
 {
     "$schema": "https://json.schemastore.org/swcrc",
     "sourceMaps": true,
-    // "exclude": "\\.spec\\.ts$",
+    // "exclude": [
+    //     "\\.spec\\.ts$",
+    //     "\\.mock\\.ts$"
+    // ],
     "jsc": {
         "parser": {
             "syntax": "typescript",
